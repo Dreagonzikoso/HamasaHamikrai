@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamasa Hamikrai - A Fúria das Escrituras</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+    <h1>Hamasa Hamikrai</h1>
+    <div id="arena">
+        <div id="party-container"></div>
+        <div id="inimigo-container"></div>
+    </div>
+    <div id="log-combate">Bem-vindo, guerreiro. Que sua jornada seja abençoada.</div>
+    <div id="acoes-container">
+        <button id="btn-open-inventory" class="btn-gerir" disabled>Gerir Grupo</button>
+        <div id="acoes">
+            <button id="btn-iniciar">Iniciar Jogo</button>
+        </div>
+    </div>
+    
+    <div id="recrutamento-modal" class="hidden">
+        <div id="recrutamento-container">
+            <h2>Escolha um novo Aliado!</h2>
+            <div id="opcoes-recrutamento"></div>
+        </div>
+    </div>
+
+    <div id="dice-animation-container" class="hidden">
+        <div id="dice">
+            <div class="face front"><div class="dot one-1"></div></div>
+            <div class="face back"><div class="dot six-1"></div><div class="dot six-2"></div><div class="dot six-3"></div><div class="dot six-4"></div><div class="dot six-5"></div><div class="dot six-6"></div></div>
+            <div class="face top"><div class="dot two-1"></div><div class="dot two-2"></div></div>
+            <div class="face bottom"><div class="dot five-1"></div><div class="dot five-2"></div><div class="dot five-3"></div><div class="dot five-4"></div><div class="dot five-5"></div></div>
+            <div class="face right"><div class="dot three-1"></div><div class="dot three-2"></div><div class="dot three-3"></div></div>
+            <div class="face left"><div class="dot four-1"></div><div class="dot four-2"></div><div class="dot four-3"></div><div class="dot four-4"></div></div>
+        </div>
+        <p id="dice-result-text"></p>
+    </div>
+
+    <div id="inventory-modal" class="hidden">
+        <div class="inventory-container">
+            <button id="btn-close-inventory" class="btn-close-modal">X</button>
+            <h2>Gestão do Grupo</h2>
+            <div class="inventory-layout">
+                <div id="party-management-panel"></div>
+                <div id="inventory-panel">
+                    <h3>Inventário</h3>
+                    <div id="inventory-list">
+                        <p>O inventário está vazio.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="jogo.js"></script>
+</body>
+</html>

@@ -1,0 +1,533 @@
+/* HamasaHamikrai3/public/estilo.css - Redesign Completo com Layout Ajustado e Tamanho Dinâmico dos Personagens */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Press+Start+2P&display=swap');
+
+body {
+    font-family: 'Cinzel', serif;
+    background-image: url('https://www.transparenttextures.com/patterns/cream-pixels.png'), url('https://img.freepik.com/free-vector/subtle-dots-pattern-background_1061-1250.jpg');
+    background-color: #f7f3e8; /* Cor de fundo mais clara e suave */
+    color: #3a2e1d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px 0;
+}
+
+h1 {
+    font-family: 'Press Start 2P', cursive;
+    color: #6a4f36; /* Tom mais suave de marrom */
+    text-shadow: 2px 2px #dcc7a0;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* --- ESTRUTURA DA ARENA - NOVO LAYOUT --- */
+#arena {
+    display: flex;
+    flex-direction: row; /* Aliados e Inimigos lado a lado */
+    justify-content: center;
+    align-items: flex-start; /* Alinha o topo dos containers */
+    width: 98%; /* Ocupa mais largura */
+    max-width: 1600px; /* Aumenta o max-width para mais espaço */
+    margin-bottom: 20px;
+    gap: 30px; /* Espaço entre os grupos de personagens */
+    flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+    height: calc(100vh - 350px); /* Altura fixa para evitar rolagem excessiva, ajustado */
+    min-height: 400px;
+}
+
+#party-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Aliados começam à esquerda */
+    gap: 20px;
+    width: 65%; /* Mais espaço para os aliados */
+    max-width: 900px; /* Largura máxima para os aliados */
+    align-items: flex-end; /* Alinha cards pela base */
+    height: 100%; /* Ocupa a altura total da arena */
+    align-content: flex-start; /* Evita que os cards se espalhem muito verticalmente */
+}
+
+#inimigo-container {
+    display: flex;
+    flex-direction: column; /* Inimigos empilhados verticalmente */
+    justify-content: flex-start; /* Inimigos começam de cima */
+    gap: 15px;
+    width: 25%; /* Espaço para os inimigos */
+    max-width: 280px; /* Largura máxima para os inimigos */
+    height: 100%; /* Ocupa a altura total da arena */
+    align-items: center; /* Centraliza os cards dos inimigos */
+}
+
+/* --- CARD DE PERSONAGEM (TAMANHO DINÂMICO) --- */
+.personagem-card {
+    background-color: rgba(255, 248, 220, 0.7); /* Creme mais suave semi-transparente */
+    border: 3px solid #8b6d4c; /* Marrom mais suave */
+    border-radius: 8px;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    transition: all 0.3s ease;
+    
+    /* Tamanho base maior, mas flexível */
+    flex: 1 1 200px; /* cresce, encolhe, base de 200px */
+    max-width: 280px; /* Aumenta o tamanho máximo para permitir crescimento */
+    min-width: 200px; /* Aumenta o tamanho mínimo */
+
+    height: 400px; /* AUMENTADO: Altura total do card do aliado */
+    padding-top: 5px;
+    overflow: hidden; /* Garante que a imagem não vaze */
+}
+
+.personagem-imagem {
+    width: 100%;
+    height: 300px; /* AUMENTADO: Altura da imagem do aliado */
+    background-size: contain;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    margin-bottom: -5px; /* Sobrepõe um pouco o conteúdo */
+    image-rendering: pixelated;
+    z-index: 1;
+}
+
+.inimigo-card {
+    /* Inimigos também se beneficiam do tamanho dinâmico */
+    flex: 0 1 200px; /* Prioriza não crescer tanto horizontalmente, mas encolhe */
+    max-width: 250px; 
+    min-width: 180px;
+
+    height: 250px; /* Altura maior para inimigos */
+    margin-bottom: 10px; /* Espaçamento entre inimigos */
+}
+
+
+.inimigo-card .personagem-imagem {
+    height: 180px; /* Imagem do inimigo ligeiramente menor */
+}
+
+
+.personagem-card-conteudo {
+    padding: 8px;
+    background-color: rgba(222, 184, 135, 0.9); /* BurlyWood mais sólido */
+    border-top: 2px solid #8b6d4c;
+    border-radius: 0 0 6px 6px;
+    position: relative;
+    flex-grow: 1; /* Permite que o conteúdo ocupe o espaço restante */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.personagem-card.turno-ativo {
+    border-color: #ffd700; /* Ouro */
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), 4px 4px 8px rgba(0,0,0,0.3);
+    transform: scale(1.08);
+    z-index: 10;
+}
+
+.personagem-card-conteudo h2 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.85rem; /* Fonte um pouco maior */
+    margin: 3px 0 8px 0;
+    color: #5c3e26;
+    white-space: nowrap; /* Evita quebra de linha em nomes longos */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.barra-vida-container, .barra-xp-container {
+    background-color: #bfa88f; /* Tom mais claro */
+    border-radius: 4px;
+    height: 16px; /* Barras um pouco maiores */
+    margin: 5px auto;
+    overflow: hidden;
+    border: 1px solid #8b6d4c;
+    width: 90%;
+}
+.barra-vida { background-color: #e74c3c; height: 100%; transition: width 0.5s ease-in-out; }
+.barra-xp { background-color: #3498db; height: 100%; transition: width 0.5s ease-in-out; }
+
+.personagem-card-conteudo p {
+    font-size: 0.8rem; /* Fonte um pouco maior */
+    font-weight: bold;
+    margin: 3px 0;
+}
+
+/* --- ATRIBUTOS, POSTURAS E ÍCONES DE STATUS --- */
+.aliado-atributos { text-align: left; font-size: 0.85rem; } /* Fonte ajustada */
+.aliado-atributos ul {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+}
+.aliado-atributos li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+}
+.btn-stat {
+    background-color: #8b6d4c;
+    color: #fff;
+    border: 1px solid #5c3e26;
+    width: 22px; height: 22px; /* Botões maiores */
+    font-size: 15px; font-weight: bold;
+    cursor: pointer; border-radius: 50%;
+    line-height: 20px;
+    padding: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-stat:disabled { background-color: #999; cursor: not-allowed; }
+
+.postura-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5px;
+    margin-bottom: 8px;
+}
+.btn-postura {
+    font-family: 'Cinzel', serif;
+    padding: 3px 8px; /* Padding ajustado */
+    border: 1px solid #8b6d4c;
+    background-color: rgba(255,255,255,0.3);
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.75rem; /* Fonte ajustada */
+}
+.btn-postura.ativo {
+    background-color: #a0522d;
+    color: white;
+}
+
+.status-effects-container {
+    position: absolute;
+    top: 5px; left: 5px;
+    display: flex;
+    gap: 3px;
+    z-index: 2;
+}
+.status-effect-icon {
+    font-size: 1.3rem; /* Ícones um pouco maiores */
+    cursor: help;
+    text-shadow: 0 0 3px black;
+}
+
+/* --- LOG E AÇÕES (CONSOLE) --- */
+#log-combate {
+    background-color: rgba(255, 248, 220, 0.85); /* Creme mais suave */
+    border: 3px solid #8b6d4c;
+    padding: 12px; width: 95%; max-width: 1500px; /* Aumenta largura máxima */
+    height: 100px; /* Altura fixa para o console */
+    overflow-y: auto;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    box-shadow: inset 2px 2px 6px rgba(0,0,0,0.2);
+}
+#log-combate p { margin: 4px 0; }
+
+#acoes-container {
+    background-color: rgba(222, 184, 135, 0.9); /* BurlyWood mais sólido */
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: 3px solid #8b6d4c;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+    width: 95%; /* Ocupa a mesma largura do log */
+    max-width: 1500px;
+    justify-content: center;
+}
+#acoes { display: flex; gap: 8px; justify-content: center; }
+#acoes button, .btn-gerir, #btn-iniciar {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.75rem; /* Fonte ligeiramente maior nos botões */
+    color: #fff;
+    background-color: #a0522d; /* Sienna */
+    border: 2px solid #5c3e26;
+    padding: 10px 18px;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+    text-shadow: 1px 1px #000;
+}
+#acoes button:hover:not(:disabled), .btn-gerir:hover:not(:disabled), #btn-iniciar:hover:not(:disabled) {
+    background-color: #8B4513; /* Marrom sela */
+    transform: translateY(-1px);
+    box-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+}
+#acoes button:disabled, .btn-gerir:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* --- TELAS DE AUTH E DASHBOARD --- */
+.auth-container, .dashboard-container {
+    background-color: rgba(255, 248, 220, 0.9); /* Creme mais suave e opaco */
+    padding: 35px;
+    border-radius: 10px;
+    border: 3px solid #8b6d4c;
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.4);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+.auth-container h1, .dashboard-container h1 {
+    font-family: 'Press Start 2P', cursive;
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+}
+.form-group { margin-bottom: 18px; text-align: left; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: bold; }
+.form-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 2px solid #8b6d4c;
+    border-radius: 4px;
+    background-color: #fffaf0; /* Ivory */
+    font-family: 'Cinzel', serif;
+    font-size: 0.95rem;
+}
+.auth-container button {
+    width: 100%; padding: 10px; background-color: #a0522d; color: white;
+    border: 2px solid #5c3e26; border-radius: 5px; font-size: 1rem;
+    cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold;
+}
+.auth-container p { margin-top: 18px; }
+.auth-container a, .dashboard-container a { color: #a0522d; font-weight: bold; text-decoration: none; }
+
+#scoreboard { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
+#scoreboard th, #scoreboard td { border: 1px solid #8b6d4c; padding: 8px; text-align: center; }
+#scoreboard th {
+    background-color: rgba(222, 184, 135, 0.8);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.65rem;
+}
+.btn-jogar-novamente {
+    display: inline-block; padding: 10px 18px; background-color: #a0522d; color: white;
+    border: 2px solid #5c3e26; border-radius: 5px; text-decoration: none; font-weight: bold;
+}
+
+/* --- MODAIS (RECRUTAMENTO, INVENTÁRIO, DADO) --- */
+.hidden { display: none !important; }
+
+#recrutamento-modal, #inventory-modal, #dice-animation-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo um pouco menos escuro */
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+}
+#recrutamento-container {
+    background-color: #f7f3e8; padding: 25px; border-radius: 8px;
+    text-align: center; border: 3px solid #8b6d4c;
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.4);
+}
+#recrutamento-container h2 { font-family: 'Press Start 2P', cursive; font-size: 1.3rem; margin-bottom: 20px; }
+#opcoes-recrutamento { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+.recruta-card {
+    background-color: rgba(222, 184, 135, 0.9); padding: 15px; border-radius: 6px; border: 2px solid #8b6d4c;
+    width: 220px;
+}
+.recruta-card h3 { font-family: 'Press Start 2P', cursive; font-size: 0.8rem; color: #5c3e26; }
+.recruta-card p, .recruta-card ul { font-size: 0.85rem; margin: 8px 0; }
+.recruta-card ul { list-style: none; padding: 0; text-align: left; }
+.recruta-card .btn-recrutar {
+    background-color: #a0522d; margin-top: 12px; width: 100%; color: white; border: 2px solid #5c3e26;
+    padding: 8px; border-radius: 4px; cursor: pointer; font-family: 'Press Start 2P', cursive; font-size: 0.65rem;
+}
+.recruta-card .habilidade-descricao {
+    font-size: 0.8rem; color: #3a2e1d; margin-top: 6px; background-color: rgba(0,0,0,0.08);
+    padding: 4px; border-radius: 3px; font-style: italic;
+}
+
+/* --- MODAL DO INVENTÁRIO --- */
+.inventory-container {
+    background-color: #f7f3e8; padding: 20px; border-radius: 10px; width: 95%; max-width: 1100px;
+    height: 90vh; border: 3px solid #8b6d4c; position: relative;
+}
+.btn-close-modal {
+    position: absolute; top: 10px; right: 10px; background: #a0522d; color: white; border: 2px solid #5c3e26;
+    width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer;
+    font-size: 1rem; line-height: 26px; text-align: center;
+}
+.inventory-container h2 { text-align: center; margin-bottom: 18px; }
+.inventory-layout { display: grid; grid-template-columns: 2.5fr 1.5fr; gap: 18px; height: calc(100% - 40px); }
+#party-management-panel, #inventory-panel {
+    background-color: rgba(222, 184, 135, 0.4); padding: 12px; border-radius: 8px; overflow-y: auto;
+    border: 2px solid #8b6d4c;
+}
+#inventory-panel h3 { text-align: center; margin-bottom: 12px; color: #5c3e26; }
+.character-sheet {
+    background: rgba(255, 248, 220, 0.7); padding: 12px; border-radius: 5px; margin-bottom: 12px;
+    border-left: 4px solid #a0522d;
+}
+.sheet-header { display: flex; justify-content: space-between; align-items: center; }
+.sheet-header h4 { font-family: 'Press Start 2P', cursive; font-size: 0.85rem; color: #5c3e26; }
+.sheet-stats, .sheet-equipment { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; font-size: 0.85rem; }
+.stat-item span:first-child { font-weight: bold; color: #5c3e26; }
+.equipment-slot { background: #dcc7a0; padding: 8px; border-radius: 4px; }
+.slot-name { font-size: 0.75rem; color: #5c3e26; margin-bottom: 3px; }
+#inventory-list { display: flex; flex-direction: column; gap: 8px; }
+.inventory-item { background: #dcc7a0; padding: 8px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid; }
+.item-name { font-weight: bold; font-size: 0.9rem; }
+.item-actions button { background: #a0522d; color: white; border: 1px solid #5c3e26; padding: 4px 8px; border-radius: 3px; cursor: pointer; margin-left: 4px; font-size: 0.75rem; }
+.rarity-comum { border-color: #9d9d9d; } .rarity-incomum { border-color: #32a852; }
+.rarity-raro { border-color: #007bff; } .rarity-epico { border-color: #8a2be2; }
+.rarity-lendario { border-color: #ff8c00; }
+.stat-bonus { color: #28a745; font-weight: bold; margin-left: 4px; font-size: 0.8rem; }
+.item-effect { font-size: 0.75rem; color: #3a2e1d; margin: 3px 0 0 0; font-style: italic; }
+.character-sheet.character-selectable {
+    cursor: pointer; border-color: #ffd700; box-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+}
+.slot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.btn-unequip-item {
+    background-color: #dc3545; color: white; border: none; width: 18px; height: 18px;
+    border-radius: 50%; font-size: 11px; font-weight: bold; cursor: pointer;
+    line-height: 18px; text-align: center;
+}
+
+/* --- ANIMAÇÕES E DADO (SEM ALTERAÇÃO NA LÓGICA) --- */
+#dice-animation-container { perspective: 1000px; }
+#dice { width: 80px; height: 80px; position: relative; transform-style: preserve-3d; } /* Dado menor */
+#dice.rolling { animation: roll 1s ease-out; }
+#dice-result-text { margin-top: 15px; font-size: 1.3rem; font-weight: bold; color: #ffd700; text-shadow: 0 0 8px #000; }
+.face {
+    position: absolute; width: 80px; height: 80px; background-color: #fff;
+    border: 2px solid #333; border-radius: 8px; padding: 8px; box-sizing: border-box;
+}
+.front { transform: translateZ(40px); } .back { transform: rotateY(180deg) translateZ(40px); }
+.top { transform: rotateX(90deg) translateZ(40px); } .bottom { transform: rotateX(-90deg) translateZ(40px); }
+.right { transform: rotateY(90deg) translateZ(40px); } .left { transform: rotateY(-90deg) translateZ(40px); }
+@keyframes roll {
+    0% { transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg); }
+    100% { transform: rotateY(720deg) rotateX(720deg) rotateZ(720deg); }
+}
+.show-1 { transform: rotateY(0deg) rotateX(0deg); } .show-6 { transform: rotateY(180deg) rotateZ(180deg); }
+.show-2 { transform: rotateX(-90deg); } .show-5 { transform: rotateX(90deg); }
+.show-3 { transform: rotateY(-90deg); } .show-4 { transform: rotateY(90deg); }
+.dot { position: absolute; width: 16px; height: 16px; margin: -8px; border-radius: 16px; background-color: #000000; } /* Pontos menores */
+.one-1, .three-2, .five-5 { top: 50%; left: 50%; }
+.two-1, .three-1, .four-1, .five-1, .six-1 { top: 20%; left: 20%; }
+.four-3, .five-3, .six-4 { top: 20%; left: 80%; }
+.four-2, .five-2, .six-3 { top: 80%; left: 20%; }
+.two-2, .three-3, .four-4, .five-4, .six-6 { top: 80%; left: 80%; }
+.six-2 { top: 50%; left: 20%; } .six-5 { top: 50%; left: 80%; }
+
+/* Animações de combate */
+@keyframes attack-animation { 50% { transform: translateX(20px) scale(1.05); } 100% { transform: translateX(0); } }
+.attack-animation { animation: attack-animation 0.4s ease-out; }
+@keyframes hit-animation { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
+.hit-animation { animation: hit-animation 0.3s linear; }
+@keyframes power-glow-animation { 50% { box-shadow: 0 0 20px #ffd700, 0 0 8px #fff; } } /* Brilho ajustado */
+.power-glow-animation { animation: power-glow-animation 0.8s ease-in-out; }
+@keyframes heal-glow-animation { 50% { box-shadow: 0 0 20px #28a745, 0 0 8px #fff; } } /* Brilho ajustado */
+.heal-glow-animation { animation: heal-glow-animation 0.8s ease-in-out; }
+
+.inimigo-card.alvo-selecionavel {
+    cursor: pointer; border-color: #dc3545;
+    box-shadow: 0 0 12px rgba(220, 53, 69, 0.7);
+    transform: scale(1.1) !important;
+}
+.inimigo-card.alvo-selecionavel:hover { background-color: rgba(255, 248, 220, 0.6); }
+[data-tooltip] { position: relative; cursor: help; }
+[data-tooltip]::after {
+    content: attr(data-tooltip); position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
+    background-color: #111; color: #fff; padding: 6px 10px; border-radius: 4px; /* Tooltip menor */
+    border: 1px solid #ffd700; font-size: 0.8rem; white-space: nowrap;
+    opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; z-index: 1000;
+}
+[data-tooltip]:hover::after { opacity: 1; visibility: visible; }
+
+/* Media Queries para telas menores (Responsividade) */
+@media (max-width: 1024px) {
+    #arena {
+        flex-direction: column; /* Em telas menores, volta a ser coluna */
+        height: auto;
+    }
+    #party-container, #inimigo-container {
+        width: 90%; /* Ocupa quase toda a largura */
+        max-width: none;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    #inimigo-container {
+        flex-direction: row; /* Inimigos lado a lado em telas menores */
+        flex-wrap: wrap;
+    }
+    /* Cards adaptativos em telas menores */
+    .personagem-card, .inimigo-card {
+        flex: 1 1 180px; /* Base menor em telas menores */
+        max-width: 220px;
+        min-width: 160px;
+        height: 280px; /* Altura ajustada */
+    }
+    .inimigo-card {
+        height: 220px; /* Altura ajustada */
+    }
+    .personagem-imagem {
+        height: 300px; /* Imagem ajustada */
+    }
+    .inimigo-card .personagem-imagem {
+        height: 150px; /* Imagem ajustada */
+    }
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: 1.8rem; }
+    #acoes-container, #log-combate {
+        width: 95%;
+        max-width: 95%;
+    }
+    .personagem-card, .inimigo-card {
+        flex: 1 1 160px; /* Base ainda menor */
+        max-width: 200px;
+        min-width: 140px;
+        height: 250px;
+    }
+    .inimigo-card {
+        height: 190px;
+    }
+    .personagem-imagem {
+        height: 200px;
+    }
+    .inimigo-card .personagem-imagem {
+        height: 120px;
+    }
+    .inventory-layout { grid-template-columns: 1fr; }
+    #party-management-panel, #inventory-panel { height: auto; }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 1.5rem; }
+    #acoes button, .btn-gerir, #btn-iniciar { padding: 8px 12px; font-size: 0.6rem; }
+    .personagem-card, .inimigo-card {
+        flex: 1 1 140px; /* Base bem pequena */
+        max-width: 180px;
+        min-width: 120px;
+        height: 220px;
+    }
+    .inimigo-card {
+        height: 170px;
+    }
+    .personagem-imagem {
+        height: 180px;
+    }
+    .inimigo-card .personagem-imagem {
+        height: 180px;
+    }
+    #log-combate { height: 80px; font-size: 0.8rem; }
+    .auth-container, .dashboard-container { padding: 25px; }
+}
