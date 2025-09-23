@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3000; // Use a porta do ambiente ou 3000
 // --- Middlewares ---
 app.use(express.json()); // Para entender JSON no corpo das requisições
 
+app.set('trust proxy', 1);
 // MODIFICAÇÃO: Configure a sessão para usar o PostgreSQL
 app.use(session({
     store: new pgSession({
@@ -24,6 +25,8 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
         secure: process.env.NODE_ENV === 'production', // Use 'true' em produção com HTTPS
+        httpOnly: true, // Ajuda a prevenir ataques XSS
+        sameSite: 'lax', // Proteção contra CSRF
         maxAge: 30 * 24 * 60 * 60 * 1000 // Opcional: define a duração do cookie (ex: 30 dias)
     }
 }));
