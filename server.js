@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
-const path = require('path'); // Adicione o 'path' do Node
+const path = require('path');
 const apiRoutes = require('./routes/api');
 const authRoutes = require('./routes/auth');
 const pool = require('./config/database');
@@ -22,7 +22,7 @@ app.use(session({
     }),
     secret: process.env.SESSION_SECRET || 'um-segredo-muito-secreto',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false, // Alterado para false para melhor prática
     cookie: {
         secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
@@ -31,21 +31,23 @@ app.use(session({
     }
 }));
 
-// --- Servir Ficheiros Estáticos ---
-// Esta é a forma correta de servir todos os ficheiros da pasta 'public'
+// --- Servir Ficheiros Públicos ---
+// Todos os ficheiros na pasta 'public' (CSS, imagens, login.html, etc.) são servidos primeiro.
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Middleware de Autenticação ---
+// Esta função irá proteger as rotas que a utilizarem.
 const requireLogin = (req, res, next) => {
     if (!req.session.userId) {
-        // Se o utilizador não estiver logado, redireciona para o login
+        // Se o utilizador não estiver logado, redireciona para a página de login.
         return res.redirect('/login.html');
     }
-    // Se estiver logado, continua para a próxima rota
+    // Se estiver logado, permite que o pedido continue.
     next();
 };
 
-// --- Rotas Públicas da API (não precisam de login) ---
+// --- Rotas da API (Públicas) ---
+// Estas rotas podem ser acedidas sem login.
 app.get('/api/scores', async (req, res) => {
     try {
         const result = await pool.query(`
@@ -70,13 +72,13 @@ app.get('/api/auth/status', (req, res) => {
 });
 
 // --- Rotas da Aplicação ---
-app.use('/auth', authRoutes); // Rotas de login/registo são públicas
-app.use('/api', requireLogin, apiRoutes); // TODAS as outras rotas /api são protegidas
+app.use('/auth', authRoutes); // Rotas de login/registo.
+app.use('/api', requireLogin, apiRoutes); // Restantes rotas da API que precisam de login.
 
-// Rota principal (página do jogo) - Protegida pelo middleware requireLogin
+// --- Rota Principal (Protegida) ---
+// Quando alguém acede a "/", o `requireLogin` é executado primeiro.
 app.get('/', requireLogin, (req, res) => {
-    // Agora que os ficheiros estáticos estão a ser servidos corretamente,
-    // podemos enviar o ficheiro do jogo para os utilizadores logados.
+    // Se o `requireLogin` permitir passar, o utilizador está logado e recebe a página do jogo.
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
