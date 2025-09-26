@@ -31,6 +31,7 @@ app.use(session({
     }
 }));
 
+app.use(express.static('public'));
 
 // O restante do seu arquivo server.js continua igual...
 
@@ -82,7 +83,7 @@ app.get('/api/auth/status', (req, res) => {
     }
 });
 
-app.use(express.static('public')); // Para servir os ficheiros do front-end
+ // Para servir os ficheiros do front-end
 
 // --- Rotas ---
 app.use('/auth', authRoutes); // Usa o router de autenticação
@@ -96,4 +97,5 @@ app.get('/', requireLogin, (req, res) => {
 // --- Inicia o Servidor ---
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
+
 });
