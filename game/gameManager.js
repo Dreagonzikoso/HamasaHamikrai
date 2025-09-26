@@ -7,7 +7,7 @@ let estado = {};
 const calcularXpNecessario = (nivel) => 125 + (nivel - 1) * 75;
 const CURA_POS_COMBATE = 20;
 const COOLDOWN_HABILIDADE_BASE = 3;
-const CHANCE_RECRUTAMENTO = 1 / 2;
+const CHANCE_RECRUTAMENTO = 1 / 8;
 const pesosRaridade = { 'Comum': 40, 'Incomum': 25, 'Raro': 15, 'Epico': 7, 'Lendario': 3 };
 const pesoPocao = 50;
 let score = 0;
