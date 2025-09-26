@@ -115,7 +115,6 @@ router.post('/jogo/finalizar', async (req, res) => {
 
 // Rota para buscar o placar
 
-
 router.post('/jogo/desistir', (req, res) => {
     try {
         const resultado = gameManager.desistirDoJogo();
