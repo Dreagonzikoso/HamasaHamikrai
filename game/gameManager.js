@@ -7,7 +7,7 @@ let estado = {};
 const calcularXpNecessario = (nivel) => 125 + (nivel - 1) * 75;
 const CURA_POS_COMBATE = 20;
 const COOLDOWN_HABILIDADE_BASE = 3;
-const CHANCE_RECRUTAMENTO = 1 / 2;
+const CHANCE_RECRUTAMENTO = 1 / 6;
 const pesosRaridade = { 'Comum': 40, 'Incomum': 25, 'Raro': 15, 'Epico': 7, 'Lendario': 3 };
 const pesoPocao = 50;
 let score = 0;
@@ -371,6 +371,13 @@ async function processarAcaoCombate(acao, inimigosRecebidos, personagemIndex, al
     const inimigosVivosAntes = inimigosRecebidos.filter(i => i.pontosDeVida.atual > 0);
     const inimigosDerrotados = inimigosNesteTurno.filter(i => i.pontosDeVida.atual <= 0 && inimigosVivosAntes.some(iva => iva.instanciaId === i.instanciaId && iva.pontosDeVida.atual > 0));
     
+    if (inimigosDerrotados.length > 0) {
+        inimigosDerrotados.forEach(inimigo => {
+            score += inimigo.pontosDeVida.max;
+            estado.log.push(`+${inimigo.pontosDeVida.max} pontos por derrotar ${inimigo.nome}!`);
+        });
+    }
+
     estado.inimigos = inimigosNesteTurno.filter(i => i.pontosDeVida.atual > 0);
 
     if (inimigosNesteTurno.every(i => i.pontosDeVida.atual <= 0)) {
@@ -617,6 +624,13 @@ async function processarVitoria(party, inimigosDerrotados, log) {
     };
 }
 
+function desistirDoJogo() {
+    estado.log = ["Você desistiu da batalha."];
+    estado.derrota = true;
+    estado.score = score; // Garante que a pontuação seja registrada
+    return estado;
+}
+
 async function sortearItemAleatorio(isBossDrop) {
     // Busca itens no DB. Se não for drop de chefe, exclui itens de chefe.
     const query = isBossDrop 
@@ -779,5 +793,6 @@ module.exports = {
     equiparItem,
     desequiparItem,
     mudarPostura,
-    getScore
+    getScore,
+    desistirDoJogo
 };

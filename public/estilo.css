@@ -307,6 +307,13 @@ h1 {
     cursor: pointer; font-family: 'Cinzel', serif; font-weight: bold;
 }
 .auth-container p { margin-top: 18px; }
+
+.btn-jogar-novamente {
+    display: inline-block; padding: 10px 18px; background-color: #a0522d; 
+    color: white;
+    border: 2px solid #5c3e26; border-radius: 5px; text-decoration: none; font-weight: bold;
+}
+
 .auth-container a, .dashboard-container a { color: #a0522d; font-weight: bold; text-decoration: none; }
 
 #scoreboard { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
@@ -316,10 +323,7 @@ h1 {
     font-family: 'Press Start 2P', cursive;
     font-size: 0.65rem;
 }
-.btn-jogar-novamente {
-    display: inline-block; padding: 10px 18px; background-color: #a0522d; color: white;
-    border: 2px solid #5c3e26; border-radius: 5px; text-decoration: none; font-weight: bold;
-}
+
 
 /* --- MODAIS (RECRUTAMENTO, INVENTÁRIO, DADO) --- */
 .hidden { display: none !important; }

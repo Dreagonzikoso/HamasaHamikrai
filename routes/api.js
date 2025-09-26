@@ -114,19 +114,16 @@ router.post('/jogo/finalizar', async (req, res) => {
 
 
 // Rota para buscar o placar
-router.get('/scores', async (req, res) => {
+
+
+router.post('/jogo/desistir', (req, res) => {
     try {
-        const result = await pool.query(`
-            SELECT u.username, s.score, s.created_at 
-            FROM scores s
-            JOIN users u ON s.user_id = u.id
-            ORDER BY s.score DESC
-            LIMIT 10
-        `);
-        res.json(result.rows);
+        const resultado = gameManager.desistirDoJogo();
+        res.json(resultado);
     } catch (err) {
-        res.status(500).json({ mensagem: 'Erro ao buscar o placar.' });
+        res.status(400).json({ mensagem: err.message });
     }
 });
+
 
 module.exports = router;

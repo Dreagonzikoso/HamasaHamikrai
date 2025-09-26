@@ -47,11 +47,31 @@ const requireLogin = (req, res, next) => {
 
 // Aplica o middleware de login a todas as rotas, exceto as de assets estáticos
 app.use((req, res, next) => {
-    // Exclui arquivos estáticos da verificação de login
-    if (req.path.endsWith('.css') || req.path.endsWith('.js') || req.path.startsWith('/auth') || req.path.startsWith('/images')) { // Adicionado /images
+    // Lista de caminhos que não exigem login
+    const publicPaths = ['/dashboard.html', '/login.html', '/register.html'];
+    
+    // Verifica se o caminho atual é público ou é um asset estático
+    if (req.path.endsWith('.css') || req.path.endsWith('.js') || req.path.startsWith('/auth') || req.path.startsWith('/images') || publicPaths.includes(req.path)) {
         return next();
     }
+    
+    // Se não for público, exige login
     requireLogin(req, res, next);
+});
+
+app.get('/api/scores', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT u.username, s.score, s.created_at 
+            FROM scores s
+            JOIN users u ON s.user_id = u.id
+            ORDER BY s.score DESC
+            LIMIT 10
+        `);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ mensagem: 'Erro ao buscar o placar.' });
+    }
 });
 
 

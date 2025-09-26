@@ -14,6 +14,7 @@ const btnCloseInventory = document.getElementById('btn-close-inventory');
 const partyManagementPanel = document.getElementById('party-management-panel');
 const inventoryPanel = document.getElementById('inventory-panel');
 const inventoryList = document.getElementById('inventory-list');
+const btnDesistir = document.getElementById('btn-desistir');
 
 let estadoGlobal = {};
 let itemParaAtribuir = null;
@@ -194,6 +195,7 @@ function atualizarTela(estado) {
 
     acoesContainer.innerHTML = '';
     btnOpenInventory.disabled = vitoria || derrota || recrutamentoPendente;
+    btnDesistir.disabled = vitoria || derrota || recrutamentoPendente;
 
     if (recrutamentoPendente) {
         mostrarTelaRecrutamento(opcoesRecrutamento);
@@ -212,6 +214,21 @@ function atualizarTela(estado) {
         }
     }
     adicionarListenersAcoes();
+}
+
+async function desistir() {
+    if (confirm("Você tem certeza que quer desistir? Sua pontuação será salva, mas contará como derrota.")) {
+        try {
+            const response = await fetch('/api/jogo/desistir', {
+                method: 'POST',
+            });
+            const novoEstado = await response.json();
+            if (!response.ok) throw new Error(novoEstado.mensagem);
+            atualizarTela(novoEstado);
+        } catch (error) {
+            logCombate.innerHTML += `<p style="color: #ff5555;">Erro: ${error.message}</p>`;
+        }
+    }
 }
 
 async function finalizarJogo() {
@@ -602,3 +619,4 @@ async function iniciarJogo() {
     atualizarTela(estadoInicial);
 }
 document.getElementById('btn-iniciar').addEventListener('click', iniciarJogo);
+btnDesistir.addEventListener('click', desistir);
