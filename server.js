@@ -74,6 +74,13 @@ app.get('/api/scores', async (req, res) => {
     }
 });
 
+app.get('/api/auth/status', (req, res) => {
+    if (req.session.userId) {
+        res.json({ loggedIn: true });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
 
 app.use(express.static('public')); // Para servir os ficheiros do front-end
 
