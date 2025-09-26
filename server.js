@@ -74,7 +74,7 @@ const requireLogin = (req, res, next) => {
 // --- 4. Rotas Protegidas (Precisam de Login) ---
 // A rota principal do jogo. O 'requireLogin' é executado primeiro.
 app.get('/', requireLogin, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 // As restantes rotas da API do jogo também são protegidas aqui.
@@ -84,3 +84,4 @@ app.use('/api', requireLogin, apiRoutes);
 app.listen(PORT, () => {
     console.log(`Servidor a rodar em http://localhost:${PORT}`);
 });
+
